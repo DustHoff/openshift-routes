@@ -350,6 +350,26 @@ SOME GARBAGE
 				"Normal Issuing Issuing cert as no TLS is configured",
 			},
 		},
+		{
+			name: "route with wildcard policy",
+			route: generateRouteStatus(&routev1.Route{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:              "some-uninitialized-route",
+					Namespace:         "some-namespace",
+					CreationTimestamp: metav1.Time{Time: time.Now().Add(-time.Hour * 24 * 30)},
+					Annotations:       map[string]string{cmapi.IssuerNameAnnotationKey: "some-issuer"},
+				},
+				Spec: routev1.RouteSpec{
+					Host:           "some-other-host.some-domain.tld",
+					WildcardPolicy: "Subdomain",
+				},
+			},
+				true),
+			want: false,
+			wantedEvents: []string{
+				"Normal Issuing Issuing cert as no TLS is configured",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -1224,7 +1244,8 @@ func generateRouteStatus(route *routev1.Route, admitted bool) *routev1.Route {
 	route.Status = routev1.RouteStatus{
 		Ingress: []routev1.RouteIngress{
 			{
-				Host: host,
+				Host:           host,
+				WildcardPolicy: route.Spec.WildcardPolicy,
 				Conditions: []routev1.RouteIngressCondition{
 					{
 						Type:   "Admitted",
