@@ -605,14 +605,20 @@ func certDurationFromRoute(r *routev1.Route) (time.Duration, error) {
 // Note that a Route can be admitted by multiple ingress controllers, so it may have multiple hostnames.
 func getRouteHostnames(r *routev1.Route) []string {
 	hostnames := []string{}
+	var hostname string
 	for _, ing := range r.Status.Ingress {
 		// Iterate over all Ingress Controllers which have admitted the Route
 		for i := range ing.Conditions {
 			if ing.Conditions[i].Type == "Admitted" && ing.Conditions[i].Status == "True" {
 				// The same hostname can be exposed by multiple Ingress routers,
 				// but we only want a list of unique hostnames.
-				if !stringInSlice(hostnames, ing.Host) {
-					hostnames = append(hostnames, ing.Host)
+				hostname = ing.Host
+				if ing.WildcardPolicy == "Subdomain" {
+					hostname = "*" + strings.TrimSpace(hostname[strings.Index(ing.Host, "."):len(hostname)])
+				}
+
+				if !stringInSlice(hostnames, hostname) {
+					hostnames = append(hostnames, hostname)
 				}
 			}
 		}
