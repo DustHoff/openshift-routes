@@ -620,6 +620,10 @@ func getRouteHostnames(r *routev1.Route) []string {
 				if !stringInSlice(hostnames, hostname) {
 					hostnames = append(hostnames, hostname)
 				}
+
+				if !stringInSlice(hostnames, strings.TrimPrefix(hostname, "*.")) {
+					hostnames = append(hostnames, strings.TrimPrefix(hostname, "*."))
+				}
 			}
 		}
 	}
