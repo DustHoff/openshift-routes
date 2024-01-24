@@ -614,15 +614,11 @@ func getRouteHostnames(r *routev1.Route) []string {
 				// but we only want a list of unique hostnames.
 				hostname = ing.Host
 				if ing.WildcardPolicy == "Subdomain" {
-					hostname = "*" + strings.TrimSpace(hostname[strings.Index(ing.Host, "."):len(hostname)])
+					hostname = "*" + strings.TrimSpace(hostname[strings.Index(hostname, "."):len(hostname)])
 				}
 
 				if !stringInSlice(hostnames, hostname) {
 					hostnames = append(hostnames, hostname)
-				}
-
-				if !stringInSlice(hostnames, strings.TrimPrefix(hostname, "*.")) {
-					hostnames = append(hostnames, strings.TrimPrefix(hostname, "*."))
 				}
 			}
 		}
