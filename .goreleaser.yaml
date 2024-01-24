@@ -7,7 +7,7 @@ before:
     # update and package new Helm chart
     - helm package ./deploy/chart --version {{ trimprefix .Version "v"}} --app-version {{ .Version }}
     # upload Helm chart as OCI artifact to GitHub Container Registry
-    - '{{if .IsSnapshot}}echo SKIPPING: {{end}}helm push ./openshift-routes-{{ trimprefix .Version "v"}}.tgz oci://ghcr.io/cert-manager/charts'
+    - '{{if .IsSnapshot}}echo SKIPPING: {{end}}helm push ./openshift-routes-{{ trimprefix .Version "v"}}.tgz oci://ghcr.io/dusthoff/charts'
 
 builds:
   - id: cert-manager-openshift-routes
@@ -38,7 +38,7 @@ dockers:
   - id: cert-manager-openshift-routes-amd64
     goarch: amd64
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-amd64
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-amd64
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -50,7 +50,7 @@ dockers:
   - id: cert-manager-openshift-routes-arm64
     goarch: arm64
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-arm64
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-arm64
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -63,7 +63,7 @@ dockers:
     goarch: arm
     goarm: "6"
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-armv6
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-armv6
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -76,7 +76,7 @@ dockers:
     goarch: arm
     goarm: "7"
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-armv7
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-armv7
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -88,7 +88,7 @@ dockers:
   - id: cert-manager-openshift-routes-s390x
     goarch: s390x
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-s390x
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-s390x
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -100,7 +100,7 @@ dockers:
   - id: cert-manager-openshift-routes-riscv64
     goarch: riscv64
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-riscv64
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-riscv64
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -112,7 +112,7 @@ dockers:
   - id: cert-manager-openshift-routes-ppc64le
     goarch: ppc64le
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-ppc64le
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-ppc64le
     use: buildx
     dockerfile: internal/cmd/Dockerfile
     build_flag_templates:
@@ -122,15 +122,15 @@ dockers:
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
 docker_manifests:
-  - name_template: ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}
+  - name_template: ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}
     image_templates:
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-amd64
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-arm64
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-armv6
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-armv7
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-s390x
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-riscv64
-      - ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Version }}-ppc64le
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-amd64
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-arm64
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-armv6
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-armv7
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-s390x
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-riscv64
+      - ghcr.io/dusthoff/cert-manager-openshift-routes:{{ .Version }}-ppc64le
 checksum:
   name_template: "checksums.txt"
 release:
